@@ -9,3 +9,53 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model Usuario {
+  id            Int             @id @default(autoincrement())
+  nome          String
+  email         String          @unique
+  senha         String
+  UsuarioCartao UsuarioCartao[]
+}
+
+model Cartao {
+  id            Int             @id @default(autoincrement())
+  nome          String
+  UsuarioCartao UsuarioCartao[]
+}
+
+model GrupoCartao {
+  id            Int             @id @default(autoincrement())
+  nome          String
+  valor_restante Float
+  transacao     Transacao[]
+  UsuarioCartao UsuarioCartao[]
+}
+
+model UsuarioCartao {
+  id            Int         @id @default(autoincrement())
+  eh_admin      Boolean
+  usuario       Usuario     @relation(fields: [usuarioId], references: [id])
+  usuarioId     Int
+  cartao        Cartao      @relation(fields: [cartaoId], references: [id])
+  cartaoId      Int
+  grupoCartao   GrupoCartao @relation(fields: [grupoCartaoId], references: [id])
+  grupoCartaoId Int
+}
+
+model Transacao {
+  id            Int          @id @default(autoincrement())
+  valor         Float
+  eh_gasto      Boolean
+  data          DateTime
+  loja          Loja         @relation(fields: [lojaId], references: [id])
+  lojaId        Int
+  GrupoCartao   GrupoCartao @relation(fields: [grupoCartaoId], references: [id])
+  grupoCartaoId Int
+}
+
+model Loja {
+  id        Int         @id @default(autoincrement())
+  nome      String
+  Transacao Transacao[]
+}
