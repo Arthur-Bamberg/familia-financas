@@ -7,7 +7,7 @@ export class LojasRepository {
   constructor(private readonly prismaService: PrismaService) {}
 
   async create(data: CreateLojaDto) {
-    await this.prismaService.loja.create({
+    return await this.prismaService.loja.create({
       data,
     });
   }

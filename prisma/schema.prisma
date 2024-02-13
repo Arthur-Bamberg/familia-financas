@@ -25,11 +25,11 @@ model Cartao {
 }
 
 model GrupoCartao {
-  id            Int             @id @default(autoincrement())
-  nome          String
-  valor_restante Float
-  transacao     Transacao[]
-  UsuarioCartao UsuarioCartao[]
+  id             Int             @id @default(autoincrement())
+  nome           String
+  valor_restante Float           @default(0)
+  transacao      Transacao[]
+  UsuarioCartao  UsuarioCartao[]
 }
 
 model UsuarioCartao {
@@ -44,11 +44,11 @@ model UsuarioCartao {
 }
 
 model Transacao {
-  id            Int          @id @default(autoincrement())
+  id            Int         @id @default(autoincrement())
   valor         Float
   eh_gasto      Boolean
   data          DateTime
-  loja          Loja         @relation(fields: [lojaId], references: [id])
+  loja          Loja        @relation(fields: [lojaId], references: [id])
   lojaId        Int
   GrupoCartao   GrupoCartao @relation(fields: [grupoCartaoId], references: [id])
   grupoCartaoId Int

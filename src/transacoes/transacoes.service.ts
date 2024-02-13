@@ -2,13 +2,26 @@ import { Injectable } from '@nestjs/common';
 import { CreateTransacaoDto } from './dto/create-transacao.dto';
 import { UpdateTransacaoDto } from './dto/update-transacao.dto';
 import { TransacoesRepository } from './transacoes.repository';
+import { GruposCartoesService } from 'src/grupos-cartoes/grupos-cartoes.service';
 
 @Injectable()
 export class TransacoesService {
-  constructor(private readonly transacoesRepository: TransacoesRepository) {}
+  constructor(
+    private readonly transacoesRepository: TransacoesRepository,
+    private readonly gruposCartoesService: GruposCartoesService,
+  ) {}
 
   async create(createTransacaoDto: CreateTransacaoDto) {
-    return await this.transacoesRepository.create(createTransacaoDto);
+    const [, transacao] = await Promise.all([
+      this.gruposCartoesService.recalcularValorRestante(
+        createTransacaoDto.grupoCartaoId,
+        createTransacaoDto.eh_gasto,
+        createTransacaoDto.valor,
+      ),
+      this.transacoesRepository.create(createTransacaoDto),
+    ]);
+
+    return transacao;
   }
 
   findAll() {

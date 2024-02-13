@@ -7,5 +7,6 @@ import { PrismaService } from 'src/prisma.service';
 @Module({
   controllers: [GruposCartoesController],
   providers: [GruposCartoesService, GruposCartoesRepository, PrismaService],
+  exports: [GruposCartoesService],
 })
 export class GruposCartoesModule {}

@@ -28,4 +28,12 @@ export class GruposCartoesService {
   remove(id: number) {
     return `This action removes a #${id} gruposCartoe`;
   }
+
+  async recalcularValorRestante(id: number, eh_gasto: boolean, valor: number) {
+    return await this.gruposCartoesRepository.recalcularValorRestante(
+      id,
+      eh_gasto,
+      valor,
+    );
+  }
 }

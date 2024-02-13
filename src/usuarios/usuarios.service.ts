@@ -12,7 +12,7 @@ export class UsuariosService {
   async create(createUsuarioDto: CreateUsuarioDto) {
     createUsuarioDto.senha = await bcrypt.hash(
       createUsuarioDto.senha,
-      process.env.SALT_ROUNDS,
+      Number(process.env.SALT_ROUNDS),
     );
 
     const novoUsuario: Usuario = await this.prismaService.usuario.create({
