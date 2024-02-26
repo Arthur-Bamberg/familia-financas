@@ -37,6 +37,30 @@ export class UsuariosService {
     };
   }
 
+  async login(email: string, senha: string) {
+    const usuario = await this.prismaService.usuario.findUnique({
+      where: { email },
+    });
+
+    if (!usuario) {
+      return {
+        message: 'Usuário não encontrado',
+      };
+    }
+
+    const senhaCorreta = await bcrypt.compare(senha, usuario.senha);
+
+    if (!senhaCorreta) {
+      return {
+        message: 'Senha incorreta',
+      };
+    }
+
+    return {
+      message: 'Usuário logado com sucesso',
+    };
+  }
+
   async remove(id: number) {
     await this.prismaService.usuario.delete({
       where: { id },
