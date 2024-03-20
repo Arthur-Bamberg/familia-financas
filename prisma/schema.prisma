@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -10,52 +7,52 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Usuario {
-  id            Int             @id @default(autoincrement())
-  nome          String
-  email         String          @unique
-  senha         String
-  UsuarioCartao UsuarioCartao[]
+model cartoes {
+  id               Int                @id(map: "Cartao_pkey") @default(autoincrement())
+  nome             String
+  usuarios_cartoes usuarios_cartoes[]
 }
 
-model Cartao {
-  id            Int             @id @default(autoincrement())
-  nome          String
-  UsuarioCartao UsuarioCartao[]
+model empresas {
+  id         Int          @id(map: "Loja_pkey") @default(autoincrement())
+  nome       String
+  transacoes transacoes[]
 }
 
-model GrupoCartao {
-  id             Int             @id @default(autoincrement())
-  nome           String
-  valor_restante Float           @default(0)
-  transacao      Transacao[]
-  UsuarioCartao  UsuarioCartao[]
+model grupos_cartoes {
+  id               Int                @id(map: "GrupoCartao_pkey") @default(autoincrement())
+  nome             String
+  valor_restante   Float              @default(0)
+  transacoes       transacoes[]
+  usuarios_cartoes usuarios_cartoes[]
 }
 
-model UsuarioCartao {
-  id            Int         @id @default(autoincrement())
-  eh_admin      Boolean
-  usuario       Usuario     @relation(fields: [usuarioId], references: [id])
-  usuarioId     Int
-  cartao        Cartao      @relation(fields: [cartaoId], references: [id])
-  cartaoId      Int
-  grupoCartao   GrupoCartao @relation(fields: [grupoCartaoId], references: [id])
-  grupoCartaoId Int
+model transacoes {
+  id              Int            @id(map: "Transacao_pkey") @default(autoincrement())
+  valor           Float
+  eh_gasto        Boolean
+  data            DateTime
+  empresa_id      Int
+  grupo_cartao_id Int
+  grupos_cartoes  grupos_cartoes @relation(fields: [grupo_cartao_id], references: [id], map: "Transacao_grupoCartaoId_fkey")
+  empresas        empresas       @relation(fields: [empresa_id], references: [id], map: "Transacao_lojaId_fkey")
 }
 
-model Transacao {
-  id            Int         @id @default(autoincrement())
-  valor         Float
-  eh_gasto      Boolean
-  data          DateTime
-  loja          Loja        @relation(fields: [lojaId], references: [id])
-  lojaId        Int
-  GrupoCartao   GrupoCartao @relation(fields: [grupoCartaoId], references: [id])
-  grupoCartaoId Int
+model usuarios {
+  id               Int                @id(map: "Usuario_pkey") @default(autoincrement())
+  nome             String
+  email            String             @unique(map: "Usuario_email_key")
+  senha            String
+  usuarios_cartoes usuarios_cartoes[]
 }
 
-model Loja {
-  id        Int         @id @default(autoincrement())
-  nome      String
-  Transacao Transacao[]
+model usuarios_cartoes {
+  id              Int            @id(map: "UsuarioCartao_pkey") @default(autoincrement())
+  eh_admin        Boolean
+  usuario_id      Int
+  cartao_id       Int
+  grupo_cartao_id Int
+  cartoes         cartoes        @relation(fields: [cartao_id], references: [id], map: "UsuarioCartao_cartaoId_fkey")
+  grupos_cartoes  grupos_cartoes @relation(fields: [grupo_cartao_id], references: [id], map: "UsuarioCartao_grupoCartaoId_fkey")
+  usuarios        usuarios       @relation(fields: [usuario_id], references: [id], map: "UsuarioCartao_usuarioId_fkey")
 }

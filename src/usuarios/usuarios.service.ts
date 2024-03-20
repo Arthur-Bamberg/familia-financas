@@ -15,7 +15,7 @@ export class UsuariosService {
       Number(process.env.SALT_ROUNDS),
     );
 
-    const novoUsuario: Usuario = await this.prismaService.usuario.create({
+    const novoUsuario: Usuario = await this.prismaService.usuarios.create({
       data: createUsuarioDto,
     });
 
@@ -26,10 +26,12 @@ export class UsuariosService {
   }
 
   async update(id: number, updateUsuarioDto: UpdateUsuarioDto) {
-    const usuarioAtualizado: Usuario = await this.prismaService.usuario.update({
-      where: { id },
-      data: updateUsuarioDto,
-    });
+    const usuarioAtualizado: Usuario = await this.prismaService.usuarios.update(
+      {
+        where: { id },
+        data: updateUsuarioDto,
+      },
+    );
 
     return {
       id: usuarioAtualizado.id,
@@ -38,7 +40,7 @@ export class UsuariosService {
   }
 
   async login(email: string, senha: string) {
-    const usuario = await this.prismaService.usuario.findUnique({
+    const usuario = await this.prismaService.usuarios.findUnique({
       where: { email },
     });
 
@@ -62,7 +64,7 @@ export class UsuariosService {
   }
 
   async remove(id: number) {
-    await this.prismaService.usuario.delete({
+    await this.prismaService.usuarios.delete({
       where: { id },
     });
 

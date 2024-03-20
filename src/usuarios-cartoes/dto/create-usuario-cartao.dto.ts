@@ -1,6 +1,6 @@
 export class CreateUsuarioCartaoDto {
   eh_admin: boolean;
-  usuarioId: number;
-  cartaoId: number;
-  grupoCartaoId: number;
+  usuario_id: number;
+  cartao_id: number;
+  grupo_cartao_id: number;
 }

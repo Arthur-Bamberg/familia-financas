@@ -5,7 +5,7 @@ import { CartoesModule } from './cartoes/cartoes.module';
 import { GruposCartoesModule } from './grupos-cartoes/grupos-cartoes.module';
 import { UsuariosCartoesModule } from './usuarios-cartoes/usuarios-cartoes.module';
 import { TransacoesModule } from './transacoes/transacoes.module';
-import { LojasModule } from './lojas/lojas.module';
+import { EmpresasModule } from './empresas/empresas.module';
 import { AuthModule } from './auth/auth.module';
 
 @Module({
@@ -18,7 +18,7 @@ import { AuthModule } from './auth/auth.module';
     GruposCartoesModule,
     UsuariosCartoesModule,
     TransacoesModule,
-    LojasModule,
+    EmpresasModule,
     AuthModule,
   ],
   controllers: [],

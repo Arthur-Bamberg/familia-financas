@@ -14,7 +14,7 @@ export class TransacoesService {
   async create(createTransacaoDto: CreateTransacaoDto) {
     const [, transacao] = await Promise.all([
       this.gruposCartoesService.recalcularValorRestante(
-        createTransacaoDto.grupoCartaoId,
+        createTransacaoDto.grupo_cartao_id,
         createTransacaoDto.eh_gasto,
         createTransacaoDto.valor,
       ),

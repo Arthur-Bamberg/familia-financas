@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
-import { CreateLojaDto } from './dto/create-loja.dto';
+import { CreateEmpresaDto } from './dto/create-empresa.dto';
 
 @Injectable()
-export class LojasRepository {
+export class EmpresasRepository {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async create(data: CreateLojaDto) {
-    return await this.prismaService.loja.create({
+  async create(data: CreateEmpresaDto) {
+    return await this.prismaService.empresas.create({
       data,
     });
   }

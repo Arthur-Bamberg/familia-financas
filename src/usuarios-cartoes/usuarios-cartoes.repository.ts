@@ -7,7 +7,7 @@ export class UsuariosCartoesRepository {
   constructor(private readonly prismaService: PrismaService) {}
 
   async create(data: CreateUsuarioCartaoDto) {
-    return this.prismaService.usuarioCartao.create({
+    return this.prismaService.usuarios_cartoes.create({
       data: data,
     });
   }
