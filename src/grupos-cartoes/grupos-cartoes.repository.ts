@@ -1,6 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { CreateGrupoCartaoDto } from './dto/create-grupo-cartao.dto';
+import Decimal from 'decimal.js';
 
 @Injectable()
 export class GruposCartoesRepository {
@@ -26,20 +27,21 @@ export class GruposCartoesRepository {
       );
     }
 
-    const valorRestante = grupoCartao.valor_restante;
+    const valorRestante = new Decimal(grupoCartao.valor_restante);
+    const valorDecimal = new Decimal(valor);
 
     if (eh_gasto) {
       return await this.prismaService.grupos_cartoes.update({
         where: { id: id },
         data: {
-          valor_restante: valorRestante - valor,
+          valor_restante: valorRestante.minus(valorDecimal).toNumber(),
         },
       });
     } else {
       return await this.prismaService.grupos_cartoes.update({
         where: { id: id },
         data: {
-          valor_restante: valorRestante + valor,
+          valor_restante: valorRestante.plus(valorDecimal).toNumber(),
         },
       });
     }
